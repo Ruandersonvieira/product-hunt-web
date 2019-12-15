@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
@@ -15,19 +16,18 @@ export default class Main extends Component {
 
   componentDidMount() {
     this.loadProducts();
-  };
+  }
 
   loadProducts = async ( page = 1) => {
     const response = await api.get(`/products?page=${page}`);
 
     const { docs, ...productInfo } = response.data;
 
-    console.log(response);
     this.setState({ products: docs, productInfo, page });
   };
 
   prevPage = () => {
-    const { page, productInfo } = this.state;
+    const { page } = this.state;
 
     if (page === 1) return;
 
@@ -54,7 +54,7 @@ export default class Main extends Component {
           <article key={ product._id }>
             <strong>{ product.title }</strong>
             <p>{ product.description }</p>
-            <a href=""> Acessar</a>
+            <Link to={`/products/${product._id}`}>Acessar</Link>
           </article>
         ))}
 
@@ -64,6 +64,5 @@ export default class Main extends Component {
         </div>
       </div>
     )
-    
   }
 }
